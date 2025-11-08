@@ -45,6 +45,20 @@ ruta_aux(Inicio, Fin, Visitados, [Inicio, Fin]) :- conectado(Inicio, Fin),\+ mem
 ruta_aux(Inicio, Fin, Visitados, [Inicio|Camino]) :- conectado(Inicio, X), \+ member(X, Visitados), ruta_aux(X, Fin, [X|Visitados], Camino).
 
 
+%verifica_gane
+verifica_gane :-
+    jugador(Aqui),
+    inventario(Inv),
+    tesoro(Aqui, Objeto),
+    member(Objeto, Inv),
+    write('¡Has ganado!'), nl,
+    write('Camino realizado: '), 
+    ruta(_, Aqui, Camino),
+    write(Camino), nl,
+    write('Inventario: '), write(Inv), nl,
+    write('Ganaste teniendo: '), write(Objeto),
+    write(' en el lugar: '), write(Aqui), nl.
+
 
 
 
