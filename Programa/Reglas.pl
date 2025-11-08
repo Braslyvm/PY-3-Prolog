@@ -40,6 +40,7 @@ que_tengo:-inventario(X),write(X).
 lugar_visitados:- camino(Micamino), write(Micamino).
 
 %ruta(Inicio,Fin,Camino)
+ruta(Inicio, Fin, [Inicio]) :- Inicio == Fin.
 ruta(Inicio, Fin, Camino) :- ruta_aux(Inicio, Fin, [Inicio], Camino).
 ruta_aux(Inicio, Fin, Visitados, [Inicio, Fin]) :- conectado(Inicio, Fin),\+ member(Fin, Visitados).
 ruta_aux(Inicio, Fin, Visitados, [Inicio|Camino]) :- conectado(Inicio, X), \+ member(X, Visitados), ruta_aux(X, Fin, [X|Visitados], Camino).
@@ -51,13 +52,15 @@ verifica_gane :-
     inventario(Inv),
     tesoro(Aqui, Objeto),
     member(Objeto, Inv),
-    write('¡Has ganado!'), nl,
-    write('Camino realizado: '), 
-    ruta(_, Aqui, Camino),
-    write(Camino), nl,
-    write('Inventario: '), write(Inv), nl,
-    write('Ganaste teniendo: '), write(Objeto),
-    write(' en el lugar: '), write(Aqui), nl.
+    camino(Camino),
+    write('Has Ganado!'), nl,
+    write("Camino realizado: "), write(Camino), nl,
+    write("Inventario: "), write(Inv), nl,
+    write("Ganaste teniendo "), write(Objeto), write(" en el lugar"), write(Aqui), !.
+
+% Caso contrario
+verifica_gane :-
+    write('Aún no se ha cumplido una condición de victoria.'), nl.
 
 
 
