@@ -1,0 +1,52 @@
+:- use_module(library(http/thread_httpd)).
+:- use_module(library(http/http_dispatch)).
+:- use_module(library(http/http_json)).
+:- use_module(library(http/http_server)).
+
+:- ['BC.pl'].
+:- ['Reglas.pl'].
+
+:- initialization
+    http_server(http_dispatch, [port(8080)]).
+
+% --- Definir los endpoints ---
+:- http_handler(root(tomar/Objeto), tomar_endpoint(Objeto), []).
+:- http_handler(root(usar/Objeto), usar_endpoint(Objeto), []).
+:- http_handler(root(mover/Lugar), mover_endpoint(Lugar), []).
+:- http_handler(root(gane), gane_endpoint, []).
+:- http_handler(root(inventario), inventario_endpoint, []).
+
+% --- Implementación de los controladores ---
+
+tomar_endpoint(ObjetoQuery, _) :-
+    atom_string(Objeto, ObjetoQuery),
+    (   tomar(Objeto)
+    ->  reply_json_dict(_{status: "ok", action: tomar, objeto: Objeto})
+    ;   reply_json_dict(_{status: "error", message: "No se puede tomar ese objeto"})
+    ).
+
+usar_endpoint(ObjetoQuery, _) :-
+    atom_string(Objeto, ObjetoQuery),
+    (   usar(Objeto)
+    ->  reply_json_dict(_{status: "ok", action: usar, objeto: Objeto})
+    ;   reply_json_dict(_{status: "error", message: "No puedes usar ese objeto"})
+    ).
+
+mover_endpoint(LugarQuery, _) :-
+    atom_string(Lugar, LugarQuery),
+    (   mover(Lugar)
+    ->  reply_json_dict(_{status: "ok", moved_to: Lugar})
+    ;   reply_json_dict(_{status: "error", message: "No puedes moverte ahí"})
+    ).
+
+gane_endpoint(_) :-
+    (   verifica_gane
+    ->  reply_json_dict(_{status: "ganaste"})
+    ;   reply_json_dict(_{status: "aun_no"})
+    ).
+
+inventario_endpoint(_) :-
+    inventario(Inv),
+    reply_json_dict(_{inventario: Inv}).
+
+
