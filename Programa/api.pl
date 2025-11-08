@@ -8,15 +8,15 @@
 
 :- initialization
     http_server(http_dispatch, [port(8080)]).
-
-% --- Definir los endpoints ---
+% Use estos para conseguir los endpoint
+% Root significa / 
+% Ejemplo: root(tomar/Objeto) = /tomar/Objeto
 :- http_handler(root(tomar/Objeto), tomar_endpoint(Objeto), []).
 :- http_handler(root(usar/Objeto), usar_endpoint(Objeto), []).
 :- http_handler(root(mover/Lugar), mover_endpoint(Lugar), []).
 :- http_handler(root(gane), gane_endpoint, []).
 :- http_handler(root(inventario), inventario_endpoint, []).
 
-% --- Implementación de los controladores ---
 
 tomar_endpoint(ObjetoQuery, _) :-
     atom_string(Objeto, ObjetoQuery),
