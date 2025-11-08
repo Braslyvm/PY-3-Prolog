@@ -39,6 +39,11 @@ que_tengo:-inventario(X),write(X).
 %lugar_visitados.
 lugar_visitados:- camino(Micamino), write(Micamino).
 
+%ruta(Inicio,Fin,Camino)
+ruta(Inicio, Fin, Camino) :- ruta_aux(Inicio, Fin, [Inicio], Camino).
+ruta_aux(Inicio, Fin, Visitados, [Inicio, Fin]) :- conectado(Inicio, Fin),\+ member(Fin, Visitados).
+ruta_aux(Inicio, Fin, Visitados, [Inicio|Camino]) :- conectado(Inicio, X), \+ member(X, Visitados), ruta_aux(X, Fin, [X|Visitados], Camino).
+
 
 
 

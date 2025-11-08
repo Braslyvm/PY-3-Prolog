@@ -3,12 +3,17 @@
 % lugar(Nombre, Descripción)
 lugar(bosque, "Un denso bosque lleno de sonidos extraños.").
 lugar(templo, "Un antiguo templo cubierto de musgo.").
+lugar(aldea, "Un pueblo pequeno y alegre.").
 
 %Conexión
 %Los lugares deben estar conectados mediante relaciones bidireccionales:
 % conectado(Lugar1, Lugar2)
 conectado(bosque, templo).
 conectado(templo, cueva).
+conectado(bosque, aldea).
+conectado(aldea, cueva).
+
+
 
 %Objetos
 %Se definirán objetos ubicados en diferentes lugares:
