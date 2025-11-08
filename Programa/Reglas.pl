@@ -22,13 +22,15 @@ tomar(Objeto):-jugador(X),objeto(Objeto,X),inventario(Tengo),retractall(inventar
 
 
 %usar (Objeto)
-usar(Objeto):-inventario(Tengo),member(Objeto,Tengo),inventario(Mio) ,\+ member(Objeto, Mio),retractall(listusando(_)),asserta(listusando([Objeto|Mio])).
+usar(Objeto):-inventario(Tengo),member(Objeto,Tengo),listusando(Mio) ,\+ member(Objeto, Mio),retractall(listusando(_)),asserta(listusando([Objeto|Mio])).
 
 %puedo_ir(Hacia).
 puedo_ir(Hacia):-jugador(Aqui),conectado(Aqui,Hacia),requiere(Ocupo,Hacia),inventario(Mio),member(Ocupo, Mio).
 
 %mover(Lugar).
-mover(Lugar):-jugador(Aqui),conectado(Aqui,Hacia),requiere(Ocupo,Hacia),listusando(Mio),member(Ocupo, Mio),camino(Micamino),retract(camino(Micamino)),asserta(camino([Lugar|Micamino])).
+mover(Lugar):-jugador(Aqui),conectado(Aqui,Hacia),requiere(Ocupo,Hacia),listusando(Mio),member(Ocupo, Mio),camino(Micamino),retract(camino(Micamino)),asserta(camino([Lugar|Micamino])),
+            retractall(jugador(Aqui)),
+            asserta(jugador(Lugar)).
 
 %donde_esta(Objeto).
 donde_esta(Objeto,X) :- objeto(Objeto,X).
