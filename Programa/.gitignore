@@ -41,3 +41,93 @@ backend/*.pyc
 *.o
 *.so
 *.dll
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+# === Node / Vite ===
+node_modules/
+dist/
+.vite/
+.cache/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# === Environment variables ===
+.env
+.env.*
+!.env.example
+
+# === Editor / OS ===
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# === Build artifacts ===
+*.out
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# === TypeScript ===
+*.tsbuildinfo
+
+# === Testing ===
+coverage/
+*.lcov
+
+# === Prolog files compiled ===
+*.qlf
+*.o
+*.so
+*.dll
+
+# === Vite static cache ===
+vite.svg
+*.pid
+
+# === System ===
+~$*
+ehthumbs.db
+desktop.ini
+
+# === If deploying combined frontend + backend ===
+Programa/__pycache__/
+Programa/*.pyc
+Programa/dist/
+Programa/build/
+
+# === Optional: OS-specific ===
+# Windows
+$RECYCLE.BIN/
+# Linux
+*~
+# Node dependencies
+node_modules/
+
