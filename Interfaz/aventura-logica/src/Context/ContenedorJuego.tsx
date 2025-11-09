@@ -1,6 +1,6 @@
 import React from "react";
 import "../estilos/juego.css";
-
+import MenuLugares from "./menuLugares"; // ✅ Import correcto
 
 export default function ContenedorJuego() {
   return (
@@ -10,7 +10,7 @@ export default function ContenedorJuego() {
       </div>
 
       <div className="panel-principal">
-        
+        <MenuLugares />  {/* ✅ Aquí se renderiza el componente */}
         <p>Bienvenido al juego. Explora los lugares y resuelve los misterios.</p>
       </div>
     </div>
