@@ -84,3 +84,5 @@ Programa/build/
 $RECYCLE.BIN/
 # Linux
 *~
+# Node dependencies
+node_modules/
