@@ -26,24 +26,43 @@
 
 tomar_endpoint(ObjetoQuery, _) :-
     atom_string(Objeto, ObjetoQuery),
-    (   tomar(Objeto)
-    ->  reply_json_dict(_{status: "ok", action: tomar, objeto: Objeto})
-    ;   reply_json_dict(_{status: "error", message: "No se puede tomar ese objeto"})
+    ( \+ validar_repetido(Objeto)
+    ->  reply_json_dict(_{status:"error", message:"Ya tienes este objeto en tu inventario"}), !
+    ; tomar(Objeto)
+    ->  reply_json_dict(_{status:"ok", action:"tomar", objeto:Objeto, message:"Has tomado el objeto exitosamente"}), !
+    ; reply_json_dict(_{status:"error", message:"No se puede tomar ese objeto aquí"})
     ).
-
 usar_endpoint(ObjetoQuery, _) :-
     atom_string(Objeto, ObjetoQuery),
-    (   usar(Objeto)
-    ->  reply_json_dict(_{status: "ok", action: usar, objeto: Objeto})
-    ;   reply_json_dict(_{status: "error", message: "No puedes usar ese objeto"})
+    (\+ validar_repetido_uso(Objeto)
+    ->  reply_json_dict(_{status:"error", message:"Ya estás usando este objeto"}), !
+    ;usar(Objeto)
+    ->  reply_json_dict(_{status:"ok", action:"usar", objeto:Objeto, message:"Has usado el objeto exitosamente"}), !
+    ;reply_json_dict(_{status:"error", message:"No puedes usar un objeto que no tienes"})
     ).
+
+puedo_ir_endpoint(LugarQuery, _) :-
+    atom_string(Lugar, LugarQuery),
+    (   \+ conectado(Lugar)
+    ->  reply_json_dict(_{status:"error", message:"No hay conexión"}), !
+    ;   \+ puedo_ir(Lugar)
+    ->  reply_json_dict(_{status:"error", message:"No puedes moverte, te falta usar el objeto requerido"}), !
+    ;   reply_json_dict(_{status:"ok", message:"Sí puedes moverte a ese lugar"})
+    ).
+
 
 mover_endpoint(LugarQuery, _) :-
     atom_string(Lugar, LugarQuery),
-    (   mover(Lugar)
-    ->  reply_json_dict(_{status: "ok", moved_to: Lugar})
-    ;   reply_json_dict(_{status: "error", message: "No puedes moverte ahí"})
+    ( \+ conectado(Lugar) ->
+        reply_json_dict(_{status:"error", message:"No hay conexión desde tu ubicación actual"}), !
+    ; \+ en_uso(Lugar) ->
+        reply_json_dict(_{status:"error", message:"No estás usando el objeto requerido"}), !
+    ; \+ requiere_visita(Lugar) ->
+        reply_json_dict(_{status:"error", message:"Debes haber visitado el lugar previo antes de entrar"}), !
+    ; mover(Lugar),
+      reply_json_dict(_{status:"ok", message:"Movimiento exitoso", moved_to:Lugar})
     ).
+
 
 verifica_gane_endpoint(_) :-
     verifica_gane(Resultado),

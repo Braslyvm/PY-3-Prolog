@@ -17,20 +17,52 @@ inicio:-jugador(X), retractall(camino(_)),asserta(camino([X])).
 listusando([]).
 
 
+
+%--------------------------
+% Tomar y usar objetos 
+%--------------------------
 %tomar(Objeto)
 tomar(Objeto):-jugador(X),objeto(Objeto,X),inventario(Tengo),retractall(inventario(_)),asserta(inventario([Objeto|Tengo])).
 
+validar_repetido(Objeto):-jugador(X),objeto(Objeto,X),inventario(Tengo),\+ member(Objeto, Tengo).
 
 %usar (Objeto)
 usar(Objeto):-inventario(Tengo),member(Objeto,Tengo),listusando(Mio) ,\+ member(Objeto, Mio),retractall(listusando(_)),asserta(listusando([Objeto|Mio])).
 
-%puedo_ir(Hacia).
-puedo_ir(Hacia):-jugador(Aqui),conectado(Aqui,Hacia),requiere(Ocupo,Hacia),inventario(Mio),member(Ocupo, Mio).
+validar_repetido_uso(Objeto):-jugador(X),objeto(Objeto,X),listusando(Mio),\+ member(Objeto, Mio).
 
-%mover(Lugar).
-mover(Lugar):-jugador(Aqui),conectado(Aqui,Hacia),requiere(Ocupo,Hacia),listusando(Mio),member(Ocupo, Mio),camino(Micamino),retract(camino(Micamino)),asserta(camino([Lugar|Micamino])),
-            retractall(jugador(Aqui)),
-            asserta(jugador(Lugar)).
+%--------------------------
+% puedo ir 
+%--------------------------
+
+%puedo_ir(Hacia).
+puedo_ir(Hacia):-requiere(Ocupo,Hacia),inventario(Mio),member(Ocupo, Mio).
+
+
+%--------------------------
+% mover 
+%--------------------------
+% Modulo de mover y validaciones 
+conectado(Lugar) :- jugador(Aqui),( conectado(Aqui, Lugar) ; conectado(Lugar, Aqui) ).
+
+
+%valida que si se esta usando objeto 
+en_uso(Lugar) :- ( requiere(Ocupo, Lugar) -> listusando(Mio), member(Ocupo, Mio)  ; true).
+
+
+% valida si ocupa visita previa
+requiere_visita(Lugar) :-
+    (   requiereVisita(Lugar, LugarRequerido)
+    ->  camino(Micamino),
+        member(LugarRequerido, Micamino)
+    ;   true 
+    ).
+
+% se mueve 
+mover(Lugar):-jugador(Aqui),camino(Micamino),retract(camino(Micamino)),asserta(camino([Lugar|Micamino])),retractall(jugador(Aqui)),asserta(jugador(Lugar)).
+
+
+
 
 %donde_esta(Objeto).
 donde_esta(Objeto,X) :- objeto(Objeto,X).
