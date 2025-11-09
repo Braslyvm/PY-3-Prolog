@@ -1,0 +1,43 @@
+# === Node & Vite ===
+node_modules/
+dist/
+.vite/
+
+# === Dependencias de build ===
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# === Archivos de entorno ===
+.env
+.env.*
+!.env.example
+
+# === Configuración del editor ===
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# === Archivos temporales del sistema ===
+*.swp
+*.swo
+*.tmp
+*.bak
+
+# === Testing ===
+coverage/
+*.lcov
+
+# === Archivos de producción (si copias frontend al backend) ===
+frontend/dist/
+backend/__pycache__/
+backend/*.pyc
+
+# === SWI-Prolog (si usas también backend Prolog en el mismo repo) ===
+*.qlf
+*.o
+*.so
+*.dll
