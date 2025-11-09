@@ -43,7 +43,7 @@ usar_endpoint(ObjetoQuery, _) :-
 
 puedo_ir_endpoint(LugarQuery, _) :-
     atom_string(Lugar, LugarQuery),
-    (   \+ conectado(Lugar)
+    (   \+ conectado_validar(Lugar)
     ->  reply_json_dict(_{status:"error", message:"No hay conexión"}), !
     ;   \+ puedo_ir(Lugar)
     ->  reply_json_dict(_{status:"error", message:"No puedes moverte, te falta usar el objeto requerido"}), !
@@ -53,7 +53,7 @@ puedo_ir_endpoint(LugarQuery, _) :-
 
 mover_endpoint(LugarQuery, _) :-
     atom_string(Lugar, LugarQuery),
-    ( \+ conectado(Lugar) ->
+    ( \+ conectado_validar(Lugar) ->
         reply_json_dict(_{status:"error", message:"No hay conexión desde tu ubicación actual"}), !
     ; \+ en_uso(Lugar) ->
         reply_json_dict(_{status:"error", message:"No estás usando el objeto requerido"}), !

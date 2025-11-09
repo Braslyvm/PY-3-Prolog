@@ -43,7 +43,7 @@ puedo_ir(Hacia):-requiere(Ocupo,Hacia),inventario(Mio),member(Ocupo, Mio).
 % mover 
 %--------------------------
 % Modulo de mover y validaciones 
-conectado(Lugar) :- jugador(Aqui),( conectado(Aqui, Lugar) ; conectado(Lugar, Aqui) ).
+conectado_validar(Lugar) :- jugador(Aqui),( conectado(Aqui, Lugar) ; conectado(Lugar, Aqui) ).
 
 
 %valida que si se esta usando objeto 
