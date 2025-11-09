@@ -59,10 +59,36 @@ verifica_gane :-
     write("Camino realizado: "), write(Camino), nl,
     write("Inventario: "), write(Inv), nl,
     write("Ganaste teniendo "), write(Objeto), write(" en el lugar"), write(Aqui), !.
-
-% Caso contrario
 verifica_gane :-
     write('Aún no se ha cumplido una condición de victoria.'), nl.
+
+%Auxiliar de como_gano. Verifica el camino de ruta
+%camino_requiere(Camino)
+camino_requiere([_]).
+camino_requiere([_, Lugar2 | Resto]) :-
+    requiere(Objeto, Lugar2),
+    write("Para llegar a "),write(Lugar2), write(" necesitas "), write(Objeto), nl,
+    camino_requiere([Lugar2 | Resto]).
+camino_requiere([_, Lugar2 | Resto]) :-
+    \+ requiere(_, Lugar2),
+    camino_requiere([Lugar2 | Resto]).
+
+camino_requiere([_, Lugar2 | Resto]) :-
+    requiereVisita(Lugar2, LugarPrevio),
+    write("Para entrar a "), write(Lugar2), write(" debes haber visitado previamente "), write(LugarPrevio), nl,
+    camino_requiere([Lugar2 | Resto]).
+
+camino_requiere([_, Lugar2 | Resto]) :-
+    \+ requiere(_, Lugar2),
+    \+ requiereVisita(Lugar2, _),
+    camino_requiere([Lugar2 | Resto]).
+
+
+%como_gano
+como_gano :- jugador(Aqui), tesoro(Destino, ObjetoTesoro), ruta(Aqui, Destino, Camino), 
+write("Ruta para ganar desde "), write(Aqui), write(" Hasta "), write(Destino), write(": "), write(Camino), nl, camino_requiere(Camino),
+    write("El tesoro que necesitas conseguir es: "), write(ObjetoTesoro), nl.
+
 
 
 
