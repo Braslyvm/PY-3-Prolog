@@ -1,30 +1,126 @@
+/* === Reset global === */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* ❌ Evita scroll global */
+  background-color: #000;
+  box-sizing: border-box;
+}
+
+/* === Contenedor principal === */
 .juego-fondo {
-  width: 100vw;
-  height: 100vh;
-  background-image: url("/fondo-juego.gif"); /* coloca aquí el gif que generamos */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background-color: #000;
+  color: #00ffff;
+  font-family: "Courier New", monospace;
+
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: flex-start;
-  color: #fff;
-}
 
-.panel-superior {
-  background: rgba(0, 0, 0, 0.6);
-  text-align: center;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  box-sizing: border-box;
   padding: 1rem;
-  font-size: 1.5rem;
-  color: #a6ffb6;
-  font-family: "Courier New", monospace;
 }
 
+/* === Panel superior (más ancho) === */
+.panel-superior {
+  border: 1px solid #00ffff;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+
+  /* 📏 Más ancho (de 90% → 95%) */
+  width: 95vw;
+  max-width: 1400px; /* Ajusta a gusto */
+  text-align: center;
+
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+/* === Panel principal (más ancho y flexible) === */
 .panel-principal {
+  border: 1px dashed #00ffff;
+  padding: 1.5rem;
+  width: 95vw; /* 📏 más ancho */
+  max-width: 1400px; /* 📏 límite máximo en pantallas grandes */
+  background-color: #0a0a0a;
+  box-sizing: border-box;
   flex: 1;
-  background: rgba(0, 0, 0, 0.4);
-  margin: 2rem;
-  padding: 2rem;
-  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden; /* ❌ sin scroll interno */
+}
+
+/* === Consola del sistema === */
+.consola {
+  margin-top: 1rem;
+  border: 1px solid #00ffff;
+  padding: 0.75rem;
+  background: #000;
+  color: #00ffff;
+  height: 180px; /* un poco más grande */
   overflow-y: auto;
+  overflow-x: hidden;
+  box-sizing: border-box;
+
+  scrollbar-width: thin;
+  scrollbar-color: #00ffff #000;
+}
+
+/* === Scrollbar WebKit personalizada === */
+.consola::-webkit-scrollbar {
+  width: 6px;
+}
+.consola::-webkit-scrollbar-thumb {
+  background-color: #00ffff;
+}
+.consola::-webkit-scrollbar-track {
+  background-color: #000;
+}
+
+.consola .mensajes p {
+  margin: 0.25rem 0;
+  word-wrap: break-word;
+}
+.paneles-secundarios {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr; 
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.panel-acciones, .panel-inventario, .panel-gane, .menu-lugares {
+  border: 1px solid #00ffff;
+  padding: 0.75rem;
+  background: #000;
+  box-sizing: border-box;
+}
+
+.panel-inventario ul { margin: .5rem 0 0; padding-left: 1rem; }
+
+.panel-acciones .fila { display: flex; gap: .5rem; }
+.panel-acciones input {
+  flex: 1;
+  background: #0a0a0a;
+  color: #00ffff;
+  border: 1px solid #00ffff;
+  padding: .25rem .5rem;
+}
+.btn-ir, .panel-acciones button, .panel-gane button, .lista-lugares button, .carrusel button {
+  border: 1px solid #00ffff;
+  background: transparent;
+  color: #00ffff;
+  padding: .3rem .6rem;
+  cursor: pointer;
+}
+.btn-ir:hover, .panel-acciones button:hover, .panel-gane button:hover,
+.lista-lugares button:hover, .carrusel button:hover {
+  background: #00ffff; color: #000;
 }

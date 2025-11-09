@@ -1,3 +1,6 @@
+
+:- set_prolog_flag(encoding, utf8).
+
 :- use_module(library(http/thread_httpd)).
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/http_json)).
@@ -17,6 +20,9 @@
 :- http_handler(root(gane), gane_endpoint, []).
 :- http_handler(root(inventario), inventario_endpoint, []).
 :- http_handler(root(lugares), lugares_endpoint, []).
+:- http_handler(root(jugador), jugador_endpoint, []).
+
+
 
 tomar_endpoint(ObjetoQuery, _) :-
     atom_string(Objeto, ObjetoQuery),
@@ -56,3 +62,11 @@ lugares_endpoint(_) :-
     ),
     reply_json_dict(_{status: "ok", lugares: Lugares}).
 
+jugador_endpoint(_) :-
+    jugador(Lugar),
+    lugar(Lugar, Descripcion),
+    reply_json_dict(_{
+        status: "ok",
+        jugador: Lugar,
+        descripcion: Descripcion
+    }).

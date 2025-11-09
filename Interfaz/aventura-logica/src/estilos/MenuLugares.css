@@ -1,0 +1,55 @@
+.menu-lugares {
+  border: 1px solid cyan;
+  padding: 1rem;
+  margin: 1rem 0;
+  background-color: #0a0a0a;
+  color: #00ffff;
+  font-family: "Courier New", monospace;
+}
+
+.carrusel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.lugar-info {
+  min-width: 120px;
+  text-align: center;
+}
+
+.btn-ir {
+  border: 1px solid cyan;
+  background: transparent;
+  color: #00ffff;
+  cursor: pointer;
+  padding: 0.2rem 0.6rem;
+  transition: all 0.2s;
+}
+
+.btn-ir:hover {
+  background-color: #00ffff;
+  color: #000;
+}
+
+.ver-todos {
+  background: none;
+  border: none;
+  color: #0ff;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+.lista-lugares {
+  list-style: none;
+  margin-top: 0.5rem;
+  padding: 0;
+}
+
+.lista-lugares li {
+  padding: 0.2rem 0;
+  border-bottom: 1px dashed #0ff3;
+}
