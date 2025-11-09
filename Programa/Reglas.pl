@@ -86,7 +86,7 @@ camino_requiere([_, Lugar2 | Resto]) :-
 
 %como_gano
 como_gano :- jugador(Aqui), tesoro(Destino, ObjetoTesoro), ruta(Aqui, Destino, Camino), 
-write("Ruta para ganar desde "), write(Aqui), write(" Hasta "), write(Destino), write(": "), write(Camino), nl, camino_requiere(Camino),
+write("Ruta para ganar desde "), write(Aqui), write(" hasta "), write(Destino), write(": "), write(Camino), nl, camino_requiere(Camino),
     write("El tesoro que necesitas conseguir es: "), write(ObjetoTesoro), nl.
 
 
