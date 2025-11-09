@@ -17,11 +17,11 @@
 :- http_handler(root(tomar/Objeto), tomar_endpoint(Objeto), []).
 :- http_handler(root(usar/Objeto), usar_endpoint(Objeto), []).
 :- http_handler(root(mover/Lugar), mover_endpoint(Lugar), []).
-:- http_handler(root(gane), gane_endpoint, []).
 :- http_handler(root(inventario), inventario_endpoint, []).
 :- http_handler(root(lugares), lugares_endpoint, []).
 :- http_handler(root(jugador), jugador_endpoint, []).
-
+:- http_handler(root(verifica_gane), verifica_gane_endpoint, []).
+:- http_handler(root(como_gano), como_gano_endpoint, []).
 
 
 tomar_endpoint(ObjetoQuery, _) :-
@@ -45,15 +45,14 @@ mover_endpoint(LugarQuery, _) :-
     ;   reply_json_dict(_{status: "error", message: "No puedes moverte ahí"})
     ).
 
-gane_endpoint(_) :-
-    (   verifica_gane
-    ->  reply_json_dict(_{status: "ganaste"})
-    ;   reply_json_dict(_{status: "aun_no"})
-    ).
+verifica_gane_endpoint(_) :-
+    verifica_gane(Resultado),
+    reply_json(Resultado).
 
 inventario_endpoint(_) :-
     inventario(Inv),
     reply_json_dict(_{inventario: Inv}).
+
 lugares_endpoint(_) :-
     findall(
         _{nombre: Nombre, descripcion: Descripcion},
@@ -70,3 +69,7 @@ jugador_endpoint(_) :-
         jugador: Lugar,
         descripcion: Descripcion
     }).
+
+como_gano_endpoint(_) :-
+    como_gano(Resultado),
+    reply_json(Resultado).

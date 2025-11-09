@@ -49,48 +49,51 @@ ruta_aux(Inicio, Fin, Visitados, [Inicio|Camino]) :- conectado(Inicio, X), \+ me
 
 
 %verifica_gane
-verifica_gane :-
+verifica_gane(Resultado) :-
     jugador(Aqui),
     inventario(Inv),
     tesoro(Aqui, Objeto),
     member(Objeto, Inv),
     camino(Camino),
-    write('Has Ganado!'), nl,
-    write("Camino realizado: "), write(Camino), nl,
-    write("Inventario: "), write(Inv), nl,
-    write("Ganaste teniendo "), write(Objeto), write(" en el lugar"), write(Aqui), !.
-verifica_gane :-
-    write('Aún no se ha cumplido una condición de victoria.'), nl.
+    Resultado = [["Estado",1],["Camino",Camino],["Inventario",Inv],["CondicionGane",[Objeto,Aqui]]],
+    !.
+verifica_gane(Resultado) :-
+    Resultado =[0].
 
 %Auxiliar de como_gano. Verifica el camino de ruta
-%camino_requiere(Camino)
-camino_requiere([_]).
-camino_requiere([_, Lugar2 | Resto]) :-
-    requiere(Objeto, Lugar2),
-    write("Para llegar a "),write(Lugar2), write(" necesitas "), write(Objeto), nl,
-    camino_requiere([Lugar2 | Resto]).
-camino_requiere([_, Lugar2 | Resto]) :-
-    \+ requiere(_, Lugar2),
-    camino_requiere([Lugar2 | Resto]).
-
-camino_requiere([_, Lugar2 | Resto]) :-
-    requiereVisita(Lugar2, LugarPrevio),
-    write("Para entrar a "), write(Lugar2), write(" debes haber visitado previamente "), write(LugarPrevio), nl,
-    camino_requiere([Lugar2 | Resto]).
-
-camino_requiere([_, Lugar2 | Resto]) :-
-    \+ requiere(_, Lugar2),
-    \+ requiereVisita(Lugar2, _),
-    camino_requiere([Lugar2 | Resto]).
-
-
-%como_gano
-como_gano :- jugador(Aqui), tesoro(Destino, ObjetoTesoro), ruta(Aqui, Destino, Camino), 
-write("Ruta para ganar desde "), write(Aqui), write(" hasta "), write(Destino), write(": "), write(Camino), nl, camino_requiere(Camino),
-    write("El tesoro que necesitas conseguir es: "), write(ObjetoTesoro), nl.
+%camino_requiere(Camino, Resultado)
+% camino_requiere(+Camino, -Resultado)
+% Devuelve una lista de listas con los requisitos encontrados.
+camino_requiere([_], []).
+camino_requiere([_, Lugar2 | Resto], Resultado) :-
+    (
+        requiere(Objeto, Lugar2)
+        ->  R = [[Lugar2, requiere, Objeto]]
+        ;   R = []
+    ),
+    (
+        requiereVisita(Lugar2, LugarPrevio)
+        ->  RV = [[Lugar2, requiereVisita, LugarPrevio]]
+        ;   RV = []
+    ),
+    append(R, RV, Requisitos),
+    camino_requiere([Lugar2 | Resto], Cola),
+    append(Requisitos, Cola, Resultado).
 
 
 
 
 
-
+%como_gano(Resultado)
+como_gano(Resultado) :-
+    jugador(Aqui),
+    tesoro(Destino, ObjetoTesoro),
+    ruta(Aqui, Destino, Camino),
+    camino_requiere(Camino, Requisitos),
+    Resultado = [
+        ["inicio", Aqui],
+        ["destino", Destino],
+        ["camino", Camino],
+        ["requisitos", Requisitos],
+        ["tesoro", ObjetoTesoro]
+    ].
