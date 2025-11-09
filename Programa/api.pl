@@ -16,6 +16,7 @@
 :- http_handler(root(mover/Lugar), mover_endpoint(Lugar), []).
 :- http_handler(root(gane), gane_endpoint, []).
 :- http_handler(root(inventario), inventario_endpoint, []).
+:- http_handler(root(lugares), lugares_endpoint, []).
 
 
 tomar_endpoint(ObjetoQuery, _) :-
@@ -49,4 +50,11 @@ inventario_endpoint(_) :-
     inventario(Inv),
     reply_json_dict(_{inventario: Inv}).
 
+lugares_endpoint(_) :-
+    findall(
+        _{nombre: Nombre, descripcion: Descripcion},
+        lugar(Nombre, Descripcion),
+        Lugares
+    ),
+    reply_json_dict(_{status: "ok", lugares: Lugares}).
 

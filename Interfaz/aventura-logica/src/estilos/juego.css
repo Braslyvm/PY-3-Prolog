@@ -1,0 +1,30 @@
+.juego-fondo {
+  width: 100vw;
+  height: 100vh;
+  background-image: url("/fondo-juego.gif"); /* coloca aquí el gif que generamos */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  color: #fff;
+}
+
+.panel-superior {
+  background: rgba(0, 0, 0, 0.6);
+  text-align: center;
+  padding: 1rem;
+  font-size: 1.5rem;
+  color: #a6ffb6;
+  font-family: "Courier New", monospace;
+}
+
+.panel-principal {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.4);
+  margin: 2rem;
+  padding: 2rem;
+  border-radius: 1rem;
+  overflow-y: auto;
+}

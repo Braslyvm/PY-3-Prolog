@@ -1,0 +1,59 @@
+/* === Fondo y layout === */
+.inicio-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: "Courier New", monospace;
+  color: #a6ffb6;
+  background-image: url("/inicio.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+}
+
+/* === Caja central === */
+.inicio-box {
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 3rem 4rem;
+  border-radius: 1rem;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+}
+
+/* === Título === */
+.inicio-title {
+  font-size: 3rem;
+  font-weight: bold;
+  color: #ffffff;
+  text-shadow: 0 0 12px #00ffcc;
+  margin-bottom: 1rem;
+}
+
+/* === Texto === */
+.inicio-text {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  color: #d1ffd7;
+}
+
+/* === Botón === */
+.inicio-button {
+  background-color: #22c55e;
+  color: black;
+  font-weight: bold;
+  padding: 0.8rem 2rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 255, 128, 0.5);
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.inicio-button:hover {
+  background-color: #16a34a;
+  transform: scale(1.05);
+}
