@@ -26,6 +26,23 @@
 :- http_handler(root(donde_esta/Objeto), donde_esta_endpoint(Objeto), []).
 :- http_handler(root(lugares_visitados), lugares_visitados_endpoint, []).
 :- http_handler(root(reiniciar_total), reiniciar_total_endpoint, []).
+:- http_handler(root(ruta/Inicio/Fin), ruta_endpoint(Inicio, Fin), []).
+
+ruta_endpoint(InicioAtom, FinAtom, _) :-
+    atom_string(Inicio, InicioAtom),
+    atom_string(Fin, FinAtom),
+    (   ruta(Inicio, Fin, Camino)
+    ->  reply_json_dict(_{
+            status: "ok",
+            inicio: Inicio,
+            fin: Fin,
+            camino: Camino
+        })
+    ;   reply_json_dict(_{
+            status: "error",
+            message: "No existe una ruta entre los lugares indicados"
+        })
+    ).
 
 reiniciar_total_endpoint(_) :-
    

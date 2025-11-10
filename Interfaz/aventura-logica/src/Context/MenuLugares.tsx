@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { obtenerLugares, mover, puedoIr } from "../api/prologApi";
+import { obtenerLugares, mover, puedoIr, obtenerRuta } from "../api/prologApi";
 
 interface Lugar {
   nombre: string;
@@ -15,6 +15,7 @@ export default function MenuLugares({ onError, onMoverExitoso }: MenuLugaresProp
   const [lugares, setLugares] = useState<Lugar[]>([]);
   const [indiceActual, setIndiceActual] = useState(0);
   const [mostrarLista, setMostrarLista] = useState(false);
+  const [ubicacionActual, setUbicacionActual] = useState("bosque"); // o consulta real al backend
 
   useEffect(() => {
     obtenerLugares()
@@ -27,6 +28,7 @@ export default function MenuLugares({ onError, onMoverExitoso }: MenuLugaresProp
       const res = await mover(nombre);
       if (res.status === "ok") {
         onMoverExitoso?.(nombre);
+        setUbicacionActual(nombre);
       } else {
         onError(res.message || "No puedes moverte ahí");
       }
@@ -45,6 +47,23 @@ export default function MenuLugares({ onError, onMoverExitoso }: MenuLugaresProp
       }
     } catch (e: any) {
       onError("Error al verificar: " + e.message);
+    }
+  };
+
+  const verRuta = async (destino: string) => {
+    try {
+      const res = await obtenerRuta(ubicacionActual, destino);
+      if (res.status === "ok") {
+        console.log(
+          `🗺️ Ruta desde ${res.inicio} hasta ${res.fin}:`,
+          res.camino.join(" → ")
+        );
+        onError(`Ruta: ${res.camino.join(" → ")}`);
+      } else {
+        onError(res.message || "No existe ruta");
+      }
+    } catch (e: any) {
+      onError("Error al obtener ruta: " + e.message);
     }
   };
 
@@ -79,6 +98,13 @@ export default function MenuLugares({ onError, onMoverExitoso }: MenuLugaresProp
           >
             ¿Puedo ir?
           </button>
+          <button
+            className="btn-ir"
+            style={{ marginLeft: "0.4rem" }}
+            onClick={() => verRuta(lugarActual.nombre)}
+          >
+            Ver ruta
+          </button>
         </div>
       )}
 
@@ -104,6 +130,13 @@ export default function MenuLugares({ onError, onMoverExitoso }: MenuLugaresProp
                   onClick={() => verificarIr(lugar.nombre)}
                 >
                   ¿Puedo ir?
+                </button>
+                <button
+                  className="btn-ir"
+                  style={{ marginLeft: "0.4rem" }}
+                  onClick={() => verRuta(lugar.nombre)}
+                >
+                  📍 Ver ruta
                 </button>
               </li>
             ))}

@@ -15,8 +15,8 @@ export default function ContenedorJuego() {
   const [descripcion, setDescripcion] = useState<string>("");
   const invRefrescar = useRef<() => void>();
 
-  const log = (m: string) => setMensajes((prev) => [...prev, `> ${m}`]);
-  const onError = (m: string) => setMensajes((prev) => [...prev, `⚠️ ${m}`]);
+  const log = (m: string) => setMensajes((prev) => [...prev, `✅ > ${m}`]);
+  const onError = (m: string) => setMensajes((prev) => [...prev, `⚠️ > ${m}`]);
 
   useEffect(() => {
     ubicacion().then((data) => {

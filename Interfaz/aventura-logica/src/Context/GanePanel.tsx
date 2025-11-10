@@ -78,9 +78,9 @@ export default function GanePanel({ onError, onExito }: Props) {
     try {
       const res = await lugaresVisitados();
       if (res.status === "ok" && Array.isArray(res.lugares)) {
-        onExito(`📍 Lugares visitados: ${res.lugares.join(" → ")}`);
+        onExito(` Lugares visitados: ${res.lugares.join(" → ")}`);
       } else {
-        onError("⚠️ No se pudo obtener la lista de lugares visitados.");
+        onError("No se pudo obtener la lista de lugares visitados.");
       }
     } catch (e: any) {
       onError("Error al consultar lugares visitados: " + e.message);

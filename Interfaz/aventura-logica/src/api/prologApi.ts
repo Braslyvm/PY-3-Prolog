@@ -70,3 +70,9 @@ export async function reiniciarTotal() {
   const res = await fetch("/api/reiniciar_total");
   return res.json();
 }
+export async function obtenerRuta(inicio: string, fin: string) {
+  const res = await fetch(
+    `/api/ruta/${encodeURIComponent(inicio)}/${encodeURIComponent(fin)}`
+  );
+  return res.json();
+}
