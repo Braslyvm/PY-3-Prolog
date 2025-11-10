@@ -9,6 +9,7 @@
 :- ['BC.pl'].
 :- ['Reglas.pl'].
 
+
 :- initialization
     http_server(http_dispatch, [port(8080)]).
 % Use estos para conseguir los endpoint
