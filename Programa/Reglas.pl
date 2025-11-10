@@ -21,6 +21,9 @@ listusando([]).
 %--------------------------
 % Tomar y usar objetos 
 %--------------------------
+existe_obj(Objeto):-objeto(Objeto,_).
+
+
 %tomar(Objeto)
 tomar(Objeto):-jugador(X),objeto(Objeto,X),inventario(Tengo),retractall(inventario(_)),asserta(inventario([Objeto|Tengo])).
 
@@ -34,7 +37,7 @@ validar_repetido_uso(Objeto):-jugador(X),objeto(Objeto,X),listusando(Mio),\+ mem
 %--------------------------
 % puedo ir 
 %--------------------------
-
+existe_lugar(Lugar):-lugar(Lugar,_).
 %puedo_ir(Hacia).
 puedo_ir(Hacia):-requiere(Ocupo,Hacia),inventario(Mio),member(Ocupo, Mio).
 
