@@ -1,11 +1,17 @@
 .menu-lugares {
   border: 1px solid cyan;
   padding: 1rem;
-  margin: 1rem 0;
+  margin: 0.5rem 0;
   background-color: #0a0a0a;
   color: #00ffff;
   font-family: "Courier New", monospace;
+  width: 95%;           
+  max-width: 1300px;   
+  box-sizing: border-box;
+  overflow: hidden;
 }
+
+
 
 .carrusel {
   display: flex;
@@ -13,11 +19,6 @@
   justify-content: center;
   gap: 0.5rem;
   margin-bottom: 0.5rem;
-}
-
-.lugar-info {
-  min-width: 120px;
-  text-align: center;
 }
 
 .btn-ir {
@@ -43,13 +44,50 @@
   margin-top: 0.5rem;
 }
 
-.lista-lugares {
-  list-style: none;
+/* 🔹 CONTENEDOR CON SCROLL INTERNO */
+.lista-scroll {
+  max-height: 160px;          
+  overflow-y: auto;           
+  overflow-x: hidden;
   margin-top: 0.5rem;
+  border: 1px dashed #0ff4;   
+  padding: 0.3rem 0.5rem;
+  background-color: #000;     
+}
+
+/* 🔹 LISTA INTERNA */
+.lista-scroll ul {
+  list-style: none;
+  margin: 0;
   padding: 0;
 }
 
-.lista-lugares li {
-  padding: 0.2rem 0;
-  border-bottom: 1px dashed #0ff3;
+.lista-scroll li {
+  padding: 0.3rem 0;
+  border-bottom: 1px dashed #0ff2;
+  font-size: 0.85rem;
+  white-space: normal;
+}
+
+.lista-scroll button {
+  border: 1px solid #0ff5;
+  background: none;
+  color: #0ff;
+  cursor: pointer;
+  font-size: 0.8rem;
+  padding: 0.1rem 0.4rem;
+  margin-left: 0.4rem;
+}
+
+.lista-scroll button:hover {
+  background-color: #0ff;
+  color: #000;
+}
+
+.lista-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.lista-scroll::-webkit-scrollbar-thumb {
+  background-color: #00ffff;
+  border-radius: 3px;
 }

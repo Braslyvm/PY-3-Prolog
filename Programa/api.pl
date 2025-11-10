@@ -22,7 +22,50 @@
 :- http_handler(root(jugador), jugador_endpoint, []).
 :- http_handler(root(verifica_gane), verifica_gane_endpoint, []).
 :- http_handler(root(como_gano), como_gano_endpoint, []).
+:- http_handler(root(puedo_ir/Lugar), puedo_ir_endpoint(Lugar), []).
+:- http_handler(root(donde_esta/Objeto), donde_esta_endpoint(Objeto), []).
+:- http_handler(root(lugares_visitados), lugares_visitados_endpoint, []).
+:- http_handler(root(reiniciar_total), reiniciar_total_endpoint, []).
 
+reiniciar_total_endpoint(_) :-
+   
+    abolish(jugador/1),
+    abolish(inventario/1),
+    abolish(camino/1),
+    abolish(listusando/1),
+
+   
+    abolish(conectado/2),
+    abolish(lugar/2),
+    abolish(objeto/2),
+    abolish(requiere/2),
+    abolish(requiereVisita/2),
+    abolish(tesoro/2),
+
+    
+    consult('BC.pl'),
+    consult('Reglas.pl'),
+
+
+    asserta(jugador(bosque)),
+    asserta(inventario([])),
+    asserta(camino([bosque])),
+    asserta(listusando([])),
+
+    reply_json_dict(_{status:"ok", message:"Sistema completamente reiniciado (como nuevo)"}).
+
+
+lugares_visitados_endpoint(_) :-
+    camino(Micamino),
+    reverse(Micamino, Ordenado),
+    reply_json_dict(_{status:"ok", lugares:Ordenado}).
+
+donde_esta_endpoint(ObjetoAtom, Request) :-
+    atom_string(Objeto, ObjetoAtom),
+    (   donde_esta(Objeto, Lugar)
+    ->  reply_json_dict(_{status:"ok", lugar:Lugar})
+    ;   reply_json_dict(_{status:"error", message:"No se encontró el objeto"})
+    ).
 
 tomar_endpoint(ObjetoQuery, _) :-
     atom_string(Objeto, ObjetoQuery),

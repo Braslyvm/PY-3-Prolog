@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { obtenerLugares, mover } from "../api/prologApi";
+import { obtenerLugares, mover, puedoIr } from "../api/prologApi";
 
 interface Lugar {
   nombre: string;
@@ -7,8 +7,8 @@ interface Lugar {
 }
 
 interface MenuLugaresProps {
-  onError: (mensaje: string) => void; 
-  onMoverExitoso?: (lugar: string) => void; 
+  onError: (mensaje: string) => void;
+  onMoverExitoso?: (lugar: string) => void;
 }
 
 export default function MenuLugares({ onError, onMoverExitoso }: MenuLugaresProps) {
@@ -35,6 +35,19 @@ export default function MenuLugares({ onError, onMoverExitoso }: MenuLugaresProp
     }
   };
 
+  const verificarIr = async (nombre: string) => {
+    try {
+      const res = await puedoIr(nombre);
+      if (res.status === "ok") {
+        onError(`✅ Puedes moverte a ${nombre}.`);
+      } else {
+        onError(` ${res.message || "No puedes ir ahí todavía."}`);
+      }
+    } catch (e: any) {
+      onError("Error al verificar: " + e.message);
+    }
+  };
+
   const lugarActual = lugares[indiceActual];
 
   const siguiente = () => {
@@ -49,34 +62,53 @@ export default function MenuLugares({ onError, onMoverExitoso }: MenuLugaresProp
 
   return (
     <div className="menu-lugares">
-      <h3> MOVERSE A:</h3>
+      <h3>MOVERSE A:</h3>
 
       {lugares.length > 0 && (
         <div className="carrusel">
           <button onClick={anterior}>◀</button>
-          
-            <strong>[{lugarActual?.nombre}]</strong>
-         
-          <button onClick={siguiente}>  ▶</button>
+          <strong>[{lugarActual?.nombre}]</strong>
+          <button onClick={siguiente}>▶</button>
           <button className="btn-ir" onClick={() => moverA(lugarActual.nombre)}>
             Ir
+          </button>
+          <button
+            className="btn-ir"
+            style={{ marginLeft: "0.4rem" }}
+            onClick={() => verificarIr(lugarActual.nombre)}
+          >
+            ¿Puedo ir?
           </button>
         </div>
       )}
 
-      <button className="ver-todos" onClick={() => setMostrarLista(!mostrarLista)}>
+      <button
+        className="ver-todos"
+        onClick={() => setMostrarLista(!mostrarLista)}
+      >
         {mostrarLista ? "Ocultar ▲" : "Ver todos ▼"}
       </button>
 
       {mostrarLista && (
-        <ul className="lista-lugares">
-          {lugares.map((lugar) => (
-            <li key={lugar.nombre}>
-              <strong>{lugar.nombre}</strong> — {lugar.descripcion}{" "}
-              <button onClick={() => moverA(lugar.nombre)}>Ir</button>
-            </li>
-          ))}
-        </ul>
+        <div className="lista-scroll">
+          <ul>
+            {lugares.map((lugar, index) => (
+              <li key={`${lugar.nombre}-${index}`}>
+                <strong>{lugar.nombre}</strong> — {lugar.descripcion}{" "}
+                <button className="btn-ir" onClick={() => moverA(lugar.nombre)}>
+                  Ir
+                </button>
+                <button
+                  className="btn-ir"
+                  style={{ marginLeft: "0.4rem" }}
+                  onClick={() => verificarIr(lugar.nombre)}
+                >
+                  ¿Puedo ir?
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
     </div>
   );

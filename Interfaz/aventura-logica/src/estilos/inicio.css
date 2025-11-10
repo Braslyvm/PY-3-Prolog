@@ -1,4 +1,4 @@
-/* === Fondo y layout === */
+
 .inicio-container {
   width: 100vw;
   height: 100vh;
@@ -15,7 +15,7 @@
   overflow: hidden;
 }
 
-/* === Caja central === */
+
 .inicio-box {
   background-color: rgba(0, 0, 0, 0.6);
   padding: 3rem 4rem;
@@ -24,7 +24,6 @@
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
 }
 
-/* === Título === */
 .inicio-title {
   font-size: 3rem;
   font-weight: bold;
@@ -33,14 +32,14 @@
   margin-bottom: 1rem;
 }
 
-/* === Texto === */
+
 .inicio-text {
   font-size: 1.2rem;
   margin-bottom: 1.5rem;
   color: #d1ffd7;
 }
 
-/* === Botón === */
+
 .inicio-button {
   background-color: #22c55e;
   color: black;

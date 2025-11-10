@@ -1,4 +1,4 @@
-/* ===== Estilos globales sin interferir con fondos ===== */
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -11,7 +11,7 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Quita fondo gris del template */
+
 html, body, #root, #app {
   margin: 0;
   padding: 0;
@@ -20,7 +20,7 @@ html, body, #root, #app {
   background: transparent !important;
 }
 
-/* Estilos base (botones, enlaces, etc.) */
+
 a {
   font-weight: 500;
   color: #64ffda;
