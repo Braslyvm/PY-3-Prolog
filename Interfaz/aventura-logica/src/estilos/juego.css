@@ -236,3 +236,8 @@ body {
   background-color: #00ffff;
   border-radius: 3px;
 }
+.consola .mensajes {
+  white-space: pre-wrap; /* 👈 respeta \n y \n\n */
+  font-family: "Fira Code", monospace;
+  line-height: 1.4;
+}

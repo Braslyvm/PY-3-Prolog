@@ -8,14 +8,15 @@ interface Lugar {
 
 interface MenuLugaresProps {
   onError: (mensaje: string) => void;
+  onExito: (mensaje: string) => void; // 👈 nuevo callback
   onMoverExitoso?: (lugar: string) => void;
 }
 
-export default function MenuLugares({ onError, onMoverExitoso }: MenuLugaresProps) {
+export default function MenuLugares({ onError, onExito, onMoverExitoso }: MenuLugaresProps) {
   const [lugares, setLugares] = useState<Lugar[]>([]);
   const [indiceActual, setIndiceActual] = useState(0);
   const [mostrarLista, setMostrarLista] = useState(false);
-  const [ubicacionActual, setUbicacionActual] = useState("bosque"); // o consulta real al backend
+  const [ubicacionActual, setUbicacionActual] = useState("bosque");
 
   useEffect(() => {
     obtenerLugares()
@@ -23,10 +24,12 @@ export default function MenuLugares({ onError, onMoverExitoso }: MenuLugaresProp
       .catch((err) => onError("Error cargando lugares: " + err.message));
   }, [onError]);
 
+  // --- Mover al jugador ---
   const moverA = async (nombre: string) => {
     try {
       const res = await mover(nombre);
       if (res.status === "ok") {
+        onExito(`Movimiento exitoso hacia ${nombre}`);
         onMoverExitoso?.(nombre);
         setUbicacionActual(nombre);
       } else {
@@ -37,46 +40,44 @@ export default function MenuLugares({ onError, onMoverExitoso }: MenuLugaresProp
     }
   };
 
+  // --- Verificar si puede ir ---
   const verificarIr = async (nombre: string) => {
     try {
       const res = await puedoIr(nombre);
       if (res.status === "ok") {
-        onError(`✅ Puedes moverte a ${nombre}.`);
+        onExito(`Puedes moverte a ${nombre}.`);
       } else {
-        onError(` ${res.message || "No puedes ir ahí todavía."}`);
+        onError(res.message || "No puedes ir ahí todavía.");
       }
     } catch (e: any) {
       onError("Error al verificar: " + e.message);
     }
   };
 
-const verRuta = async (destino: string) => {
-  try {
-    const res = await obtenerRuta(ubicacionActual, destino);
-    if (res.status === "ok") {
-      console.log(`🗺️ Rutas desde ${res.inicio} hasta ${res.fin}:`);
+  // --- Ver rutas entre ubicaciones ---
+  const verRuta = async (destino: string) => {
+    try {
+      const res = await obtenerRuta(ubicacionActual, destino);
+      if (res.status === "ok") {
+        if (Array.isArray(res.rutas) && res.rutas.length > 0) {
+          const rutasTexto = res.rutas
+            .map(
+              (camino: string[], i: number) =>
+                `🗺️ Ruta ${i + 1}: ${camino.join(" → ")}`
+            )
+            .join("\n\n");
 
-      if (Array.isArray(res.rutas) && res.rutas.length > 0) {
-        const rutasTexto = res.rutas
-          .map(
-            (camino: string[], i: number) =>
-              `Ruta ${i + 1}: ${camino.join(" → ")}`
-          )
-          .join("\n");
-
-        console.log(rutasTexto);
-
-        onError(`🗺️ Rutas disponibles:\n${rutasTexto}`);
+          onExito(`🗺️ Rutas desde ${res.inicio} hasta ${res.fin}:\n${rutasTexto}`);
+        } else {
+          onError("No hay rutas disponibles entre esos lugares.");
+        }
       } else {
-        onError(" No hay rutas disponibles entre esos lugares.");
+        onError(res.message || "No existe ruta entre esos lugares.");
       }
-    } else {
-      onError(res.message || " No existe ruta entre esos lugares.");
+    } catch (e: any) {
+      onError("Error al obtener rutas: " + e.message);
     }
-  } catch (e: any) {
-    onError("Error al obtener rutas: " + e.message);
-  }
-};
+  };
 
   const lugarActual = lugares[indiceActual];
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom"; // 👈 importamos el hook
+import { useNavigate } from "react-router-dom"; 
 import "../estilos/juego.css";
 import MenuLugares from "./MenuLugares";
 import InventarioPanel from "./InventarioPanel";
@@ -9,7 +9,7 @@ import Consola from "./Consola";
 import { ubicacion, reiniciarTotal } from "../api/prologApi";
 
 export default function ContenedorJuego() {
-  const navigate = useNavigate(); // 👈 inicializa navegación
+  const navigate = useNavigate(); 
   const [mensajes, setMensajes] = useState<string[]>([]);
   const [lugarActual, setLugarActual] = useState<string>("");
   const [descripcion, setDescripcion] = useState<string>("");
@@ -81,6 +81,7 @@ export default function ContenedorJuego() {
       <div className="panel-principal">
         <MenuLugares
           onError={onError}
+          onExito={log} 
           onMoverExitoso={(lugar) => {
             log(`Te moviste a ${lugar}.`);
             ubicacion().then((data) => {
@@ -96,6 +97,7 @@ export default function ContenedorJuego() {
           <AccionesPanel
             onError={onError}
             onExito={log}
+          
             onRefrescarInventario={() => invRefrescar.current?.()}
           />
           <InventarioPanel
