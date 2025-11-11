@@ -50,22 +50,33 @@ export default function MenuLugares({ onError, onMoverExitoso }: MenuLugaresProp
     }
   };
 
-  const verRuta = async (destino: string) => {
-    try {
-      const res = await obtenerRuta(ubicacionActual, destino);
-      if (res.status === "ok") {
-        console.log(
-          `🗺️ Ruta desde ${res.inicio} hasta ${res.fin}:`,
-          res.camino.join(" → ")
-        );
-        onError(`Ruta: ${res.camino.join(" → ")}`);
+const verRuta = async (destino: string) => {
+  try {
+    const res = await obtenerRuta(ubicacionActual, destino);
+    if (res.status === "ok") {
+      console.log(`🗺️ Rutas desde ${res.inicio} hasta ${res.fin}:`);
+
+      if (Array.isArray(res.rutas) && res.rutas.length > 0) {
+        const rutasTexto = res.rutas
+          .map(
+            (camino: string[], i: number) =>
+              `Ruta ${i + 1}: ${camino.join(" → ")}`
+          )
+          .join("\n");
+
+        console.log(rutasTexto);
+
+        onError(`🗺️ Rutas disponibles:\n${rutasTexto}`);
       } else {
-        onError(res.message || "No existe ruta");
+        onError(" No hay rutas disponibles entre esos lugares.");
       }
-    } catch (e: any) {
-      onError("Error al obtener ruta: " + e.message);
+    } else {
+      onError(res.message || " No existe ruta entre esos lugares.");
     }
-  };
+  } catch (e: any) {
+    onError("Error al obtener rutas: " + e.message);
+  }
+};
 
   const lugarActual = lugares[indiceActual];
 

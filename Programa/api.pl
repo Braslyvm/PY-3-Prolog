@@ -32,12 +32,13 @@
 ruta_endpoint(InicioAtom, FinAtom, _) :-
     atom_string(Inicio, InicioAtom),
     atom_string(Fin, FinAtom),
-    (   ruta(Inicio, Fin, Camino)
+    findall(Camino, ruta(Inicio, Fin, Camino), Caminos),
+    (   Caminos \= []
     ->  reply_json_dict(_{
             status: "ok",
             inicio: Inicio,
             fin: Fin,
-            camino: Camino
+            rutas: Caminos
         })
     ;   reply_json_dict(_{
             status: "error",
@@ -78,7 +79,7 @@ lugares_visitados_endpoint(_) :-
     reverse(Micamino, Ordenado),
     reply_json_dict(_{status:"ok", lugares:Ordenado}).
 
-donde_esta_endpoint(ObjetoAtom, Request) :-
+donde_esta_endpoint(ObjetoAtom, _) :-
     atom_string(Objeto, ObjetoAtom),
     (   donde_esta(Objeto, Lugar)
     ->  reply_json_dict(_{status:"ok", lugar:Lugar})
@@ -151,5 +152,5 @@ jugador_endpoint(_) :-
     }).
 
 como_gano_endpoint(_) :-
-    como_gano(Resultado),
-    reply_json(Resultado).
+    findall(Resultado, como_gano(Resultado), Resultados),
+    reply_json(Resultados).

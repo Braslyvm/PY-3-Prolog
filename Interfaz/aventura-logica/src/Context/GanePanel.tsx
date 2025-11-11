@@ -44,36 +44,75 @@ export default function GanePanel({ onError, onExito }: Props) {
   };
 
   
-  const verComoGano = async () => {
-    try {
-      const res = await comoGano();
+const verComoGano = async () => {
+  try {
+    const res = await comoGano();
 
-      if (Array.isArray(res)) {
-        onExito("📜 POSIBLES CAMINOS PARA GANAR:");
-        res.forEach((item: any) => {
-          if (Array.isArray(item)) {
-            const [clave, valor] = item;
-            if (clave === "inicio") onExito(`🔹 Inicio: ${valor}`);
-            else if (clave === "destino") onExito(`🏁 Destino: ${valor}`);
-            else if (clave === "camino")
-              onExito(`🧭 Camino: ${valor.join(" → ")}`);
-            else if (clave === "📋 requisitos" && Array.isArray(valor)) {
-              onExito(" Requisitos:");
-              valor.forEach((r: any) =>
-                onExito(`   • ${r[0]} ${r[1]} ${r[2]}`)
-              );
-            } else if (clave === "tesoro") onExito(`💰 Tesoro: ${valor}`);
+    if (Array.isArray(res)) {
+      if (res.length === 0) {
+        onExito(" No hay caminos registrados para ganar.");
+        return;
+      }
+
+      onExito("📜 POSIBLES CAMINOS PARA GANAR:");
+
+      res.forEach((ruta: any, index: number) => {
+        if (!Array.isArray(ruta)) return;
+
+        onExito(`\n Camino posible #${index + 1}:`);
+
+        let inicio = "";
+        let destino = "";
+        let camino: string[] = [];
+        let requisitos: any[] = [];
+        let tesoro = "";
+
+        ruta.forEach((item: any) => {
+          if (!Array.isArray(item) || item.length < 2) return;
+          const [clave, valor] = item;
+
+          switch (clave) {
+            case "inicio":
+              inicio = valor;
+              break;
+            case "destino":
+              destino = valor;
+              break;
+            case "camino":
+              camino = Array.isArray(valor) ? valor : [];
+              break;
+            case "requisitos":
+              requisitos = Array.isArray(valor) ? valor : [];
+              break;
+            case "tesoro":
+              tesoro = valor;
+              break;
           }
         });
-      } else {
-        onError("Formato inesperado de /como_gano");
-      }
-    } catch (e: any) {
-      onError("Error al consultar cómo ganar: " + e.message);
-    }
-  };
 
-  // ✅ Mostrar los lugares visitados
+        if (inicio) onExito(`   • Inicio: ${inicio}`);
+        if (destino) onExito(`   • Destino: ${destino}`);
+        if (camino.length > 0)
+          onExito(`   • Camino: ${camino.join(" → ")}`);
+        if (requisitos.length > 0) {
+          onExito("   • Requisitos:");
+          requisitos.forEach((req: any) => {
+            if (Array.isArray(req) && req.length === 3) {
+              const [lugar, tipo, obj] = req;
+              onExito(`       - ${lugar} ${tipo} ${obj}`);
+            }
+          });
+        }
+        if (tesoro) onExito(`   • Tesoro: ${tesoro}`);
+      });
+    } else {
+      onError("Formato inesperado del servidor en /api/como_gano.");
+    }
+  } catch (e: any) {
+    onError("Error al consultar cómo ganar: " + e.message);
+  }
+};
+
   const verVisitados = async () => {
     try {
       const res = await lugaresVisitados();
