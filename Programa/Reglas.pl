@@ -36,7 +36,10 @@ validar_repetido_uso(Objeto):-jugador(X),objeto(Objeto,X),listusando(Mio),\+ mem
 %--------------------------
 
 %puedo_ir(Hacia).
-puedo_ir(Hacia):-requiere(Ocupo,Hacia),inventario(Mio),member(Ocupo, Mio).
+puedo_ir(Hacia) :-
+    ( \+ requiere(_, Hacia)
+    ->  true
+    ;   requiere(Ocupo, Hacia),inventario(Mio),member(Ocupo, Mio)).
 
 
 %--------------------------
@@ -47,7 +50,10 @@ conectado_validar(Lugar) :- jugador(Aqui),( conectado(Aqui, Lugar) ; conectado(L
 
 
 %valida que si se esta usando objeto 
-en_uso(Lugar) :- ( requiere(Ocupo, Lugar) -> listusando(Mio), member(Ocupo, Mio)  ; true).
+en_uso(Lugar) :-
+    ( \+ requiere(_, Lugar)
+    ; requiere(Ocupo, Lugar),listusando(Mio),member(Ocupo, Mio)).
+
 
 
 % valida si ocupa visita previa
